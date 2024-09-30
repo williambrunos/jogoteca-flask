@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session, flash
 
 app = Flask(__name__)
-
+app.secret_key = 'vingardionleviosa'
 
 class Jogo:
     def __init__(self, nome, categoria, console):
@@ -26,8 +26,6 @@ def novo_jogo():
     return render_template('novo.html', titulo='Novo Jogo')
 
 
-# TODO: Transformar esta rota /criar em middleware para que não fique carregando a lista apenas em /criar,
-#  deve ser ilustrada também no /
 @app.route('/criar', methods=['POST'])
 def criar_jogo():
     nome = request.form['nome']
@@ -38,6 +36,22 @@ def criar_jogo():
     jogos.append(jogo)
 
     return redirect('/')
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/autenticar', methods=['POST'])
+def autenticar():
+    if request.form['senha'] == 'alohomora':
+        session['usuario_logado'] = request.form['nome']
+        flash("Usuário logado com sucesso!")
+        return redirect('/')
+    else:
+        flash('Usuário não logado!')
+        return redirect('/login')
 
 
 app.run(debug=True)
