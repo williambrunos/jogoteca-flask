@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, session, flash
 app = Flask(__name__)
 app.secret_key = 'vingardionleviosa'
 
+
 class Jogo:
     def __init__(self, nome, categoria, console):
         self.nome = nome
@@ -52,6 +53,16 @@ def autenticar():
     else:
         flash('Usuário não logado!')
         return redirect('/login')
+
+
+@app.route('/logout')
+def logout():
+    if session.get('usuario_logado', ''):
+        session['usuario_logado'] = None
+
+    flash("Logout feito com sucesso!")
+
+    return redirect('/')
 
 
 app.run(debug=True)
