@@ -22,7 +22,8 @@
         {% endwith %}
 
         <h1>Insira seu Login</h1>
-        <form action="/autenticar" method="POST">
+        <form action="{{ url_for('autenticar') }}" method="POST">
+            <input type="hidden" name="proximo" value="{{ proximo }}">
             <p><label>Nome do usuário</label> <input class="form-control" name="nome" required></p>
             <p><label>Senha:</label> <input class="form-control" type="password" name="senha" required></p>
             <p><button class="btn-primary" type="submit">Login</button></p>
